@@ -46,9 +46,10 @@ const FormComponent = () => {
                 showConfirmButton: false,
                 timer: 1500
            })
+           navigate('/')
            setState({...state,title:"", author:""})
            setContent("")
-              navigate('/')
+           
         })
         .catch(err=>{
             Swal.fire(
