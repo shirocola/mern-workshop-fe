@@ -5,6 +5,7 @@ import Swal from "sweetalert2"
 import { useParams } from 'react-router-dom'
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
+import { getToken } from "../service/authorize"
 
 const EditFormComponent = () => {
     const [state, setState] = useState({
@@ -48,9 +49,10 @@ const EditFormComponent = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="content">Detail</label>
+                    <label htmlFor="content">Content</label>
                     <ReactQuill theme="snow" value={content} onChange={submitContent}
                     className="pb-5 mb-3"
+                    id="content"
                     placeholder="write your blog"
                     style={{border: '1px solid #666'}} />
                 </div>
@@ -76,7 +78,12 @@ const EditFormComponent = () => {
         event.preventDefault()
         console.log("APP URL =", import.meta.env.VITE_APP_API)
         axios
-        .put(`${import.meta.env.VITE_APP_API}/blog/${slug}`, {title, content, author})
+        .put(`${import.meta.env.VITE_APP_API}/blog/${slug}`, {title, content, author},
+        {
+            headers:{
+                authorization: `Bearer ${getToken()}`
+            }
+        })
         .then(response=>{
             Swal.fire({
                 icon: 'success',

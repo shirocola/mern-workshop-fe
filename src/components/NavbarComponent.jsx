@@ -1,16 +1,38 @@
-
+import { Link, useNavigate } from "react-router-dom"
+import { getUser, logout } from "../service/authorize"
 const NavbarComponent = () => {
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout();
+    navigate('/')
+  };
+
   return (
     <nav>
       <ul className="nav nav-tabs">
         <li className="nav-item pr-3 pt-3 pb-3">
-          <a href="/" className="nav-link">Home</a>
+          <Link to="/" className="nav-link">Home</Link>
         </li>
-        <li className="nav-item pr-3 pt-3 pb-3">
-          <a href="/create" className="nav-link">Create</a>
-        </li><li className="nav-item pr-3 pt-3 pb-3">
-        <a href="/login" className="nav-link">Login</a>
-      </li>
+        {
+          !getUser() && (
+            <li className="nav-item pr-3 pt-3 pb-3">
+              <Link to="/login" className="nav-link">Login</Link>
+            </li>
+          )
+        }
+        {
+          getUser() && (
+            <li className="nav-item pr-3 pt-3 pb-3">
+              <button onClick={handleLogout} className="nav-link">Logout</button>
+            </li>
+          )}
+        {
+          getUser() && (
+            <li className="nav-item pr-3 pt-3 pb-3">
+            <Link to="/create" className="nav-link">Create</Link>
+            </li>
+          )}
       </ul>
     </nav>
   )

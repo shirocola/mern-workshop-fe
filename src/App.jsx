@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import parse from 'html-react-parser'
+import { getUser } from './service/authorize'
+import { getToken } from './service/authorize'
 
 function App() {
   const [blogs, setBlogs] = useState([])
@@ -38,7 +40,12 @@ function App() {
 
   const deleteBlog = slug => {
     axios
-      .delete(`${import.meta.env.VITE_APP_API}/blog/${slug}`)
+      .delete(`${import.meta.env.VITE_APP_API}/blog/${slug}`,
+      {
+        headers: {
+          authorization: `Bearer ${getToken()}`
+        }
+      })
       .then(response => {
         Swal.fire({
           icon: 'success',
@@ -97,8 +104,12 @@ function App() {
             </Link>
             <div>{parse(blog.content)}</div>
             <p className='text-muted'> author: {blog.author} , publish: {blog.createdAt}</p>
-            <button className='btn btn-outline-danger' onClick={() => confirmDelete(blog.slug)}>Delete</button> &nbsp;
-            <Link className='btn btn-outline-warning' to={`/blog/edit/${blog.slug}`}>Edit</Link>
+            {getUser() && (
+              <div>
+                <button className='btn btn-outline-danger' onClick={() => confirmDelete(blog.slug)}>Delete</button> &nbsp;
+                <Link className='btn btn-outline-warning' to={`/blog/edit/${blog.slug}`}>Edit</Link>
+              </div>
+            )}
           </div>
         </div>
       )

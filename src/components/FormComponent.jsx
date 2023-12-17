@@ -3,12 +3,14 @@ import NavbarComponent from "./NavbarComponent"
 import axios from "axios"
 import Swal from "sweetalert2"
 import ReactQuill from "react-quill"
+import { getUser } from "../service/authorize"
 import "react-quill/dist/quill.snow.css"
+import { getToken } from "../service/authorize"
 
 const FormComponent = () => {
     const [state, setState] = useState({
         title: '',
-        author: '',
+        author: getUser(),
     })
     const {title, author} = state
 
@@ -27,7 +29,13 @@ const FormComponent = () => {
         event.preventDefault()
         console.log("APP URL =", import.meta.env.VITE_APP_API)
         axios
-        .post(`${import.meta.env.VITE_APP_API}/create`, {title, content, author})
+        .post(`${import.meta.env.VITE_APP_API}/create`, 
+        {title, content, author}),
+        {
+            headers:{
+                authorization: `Bearer ${getToken()}`
+            }
+        }
         .then(()=>{
            Swal.fire({
                 icon: 'success',
@@ -50,23 +58,27 @@ const FormComponent = () => {
             <h1>Write your blog</h1>
             <form onSubmit={submitForm}>
                 <div className="form-group">
-                    <label htmlFor="title">Name</label>
+                    <label htmlFor="title">Title</label>
                     <input type="text" className="form-control"
                     value={title} 
                     onChange={inputValue("title")} 
+                    id="title"
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="body">Detail</label>
+                    <label htmlFor="content">Content</label>
                     <ReactQuill theme="snow" value={content} onChange={submitContent}
                     className="pb-5 mb-3"
                     placeholder="write your blog"
+                    id="content"
+                    aria-label="content"
                     style={{border: '1px solid #666'}} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="body">Author</label>
+                    <label htmlFor="author">Author</label>
                     <input type="text" className="form-control" 
                     value={author}
+                    id="author"
                     onChange={inputValue("author")}
                     />
                 </div>
