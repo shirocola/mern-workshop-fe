@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import NavbarComponent from './NavbarComponent'
+import parse from 'html-react-parser'
 
 const SingleComponent = () => {
     const [blog, setBlog] = useState('')
@@ -22,7 +23,7 @@ const SingleComponent = () => {
             <div>
             <NavbarComponent />
                 <h1>{blog.title}</h1>
-                <p>{blog.content}</p>
+                <div>{parse(blog.content)}</div>
                 <p className='text-muted'> author: {blog.author} , publish: {new Date(blog.createdAt).toLocaleString()}</p>
             </div>
         ) : (

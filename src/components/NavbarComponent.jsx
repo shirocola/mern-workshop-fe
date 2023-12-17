@@ -8,7 +8,9 @@ const NavbarComponent = () => {
         </li>
         <li className="nav-item pr-3 pt-3 pb-3">
           <a href="/create" className="nav-link">Create</a>
-        </li>
+        </li><li className="nav-item pr-3 pt-3 pb-3">
+        <a href="/login" className="nav-link">Login</a>
+      </li>
       </ul>
     </nav>
   )

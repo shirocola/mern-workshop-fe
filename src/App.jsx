@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import parse from 'html-react-parser'
 
 function App() {
   const [blogs, setBlogs] = useState([])
@@ -94,7 +95,7 @@ function App() {
             <Link to={`blog/${blog.slug}`}>
               <h2>{blog.title}</h2>
             </Link>
-            <p>{blog.content}</p>
+            <div>{parse(blog.content)}</div>
             <p className='text-muted'> author: {blog.author} , publish: {blog.createdAt}</p>
             <button className='btn btn-outline-danger' onClick={() => confirmDelete(blog.slug)}>Delete</button> &nbsp;
             <Link className='btn btn-outline-warning' to={`/blog/edit/${blog.slug}`}>Edit</Link>
