@@ -30,12 +30,12 @@ const FormComponent = () => {
         console.log("APP URL =", import.meta.env.VITE_APP_API)
         axios
         .post(`${import.meta.env.VITE_APP_API}/create`, 
-        {title, content, author}),
+        {title, content, author},
         {
             headers:{
                 authorization: `Bearer ${getToken()}`
             }
-        }
+        })
         .then(()=>{
            Swal.fire({
                 icon: 'success',
