@@ -6,8 +6,10 @@ import ReactQuill from "react-quill"
 import { getUser } from "../service/authorize"
 import "react-quill/dist/quill.snow.css"
 import { getToken } from "../service/authorize"
+import { useNavigate } from "react-router-dom"
 
 const FormComponent = () => {
+    const navigate = useNavigate()
     const [state, setState] = useState({
         title: '',
         author: getUser(),
@@ -46,6 +48,7 @@ const FormComponent = () => {
            })
            setState({...state,title:"", author:""})
            setContent("")
+              navigate('/')
         })
         .catch(err=>{
             Swal.fire(
